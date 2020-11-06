@@ -1,0 +1,30 @@
+{
+  "name": "name",
+  "version": "1.0.0",
+  "description": "Nuxt.js project",
+  "author": "Adil <uganoghli@gmail.com>",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "yarn lint:js",
+    "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "heroku-postbuild": "npm run build"
+  },
+  "dependencies": {
+    "@nuxt/http": "latest",
+    "axios": "^0.21.0",
+    "cors": "^2.8.5",
+    "nodemon": "^2.0.6",
+    "nuxt": "latest"
+  },
+  "devDependencies": {
+    "@nuxtjs/eslint-config": "^3.0.0",
+    "@nuxtjs/eslint-module": "^2.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.2.0",
+    "eslint-plugin-nuxt": "^1.0.0"
+  }
+}

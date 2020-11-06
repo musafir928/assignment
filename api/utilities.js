@@ -4,7 +4,7 @@ function generateAndSaveRandomNumber() {
     return new Promise((resolve, reject) => {
         const randomNumber = Math.round(Math.random()*101) -1;
         const randomNumberObject = {randomNumber};
-      fs.writeFile('api/json/vars.json', JSON.stringify(randomNumberObject), 'utf8', err => {
+      fs.writeFile('/json/vars.json', JSON.stringify(randomNumberObject), 'utf8', err => {
         if (err) {
           reject(err);
         } else {
@@ -16,7 +16,7 @@ function generateAndSaveRandomNumber() {
 
 function addUserToWinnersList(users) {
     return new Promise((resolve, reject) => {
-      fs.writeFile('api/json/users.json', JSON.stringify(users), 'utf8', err => {
+      fs.writeFile('/json/users.json', JSON.stringify(users), 'utf8', err => {
         if (err) {
           reject(err);
         } else {
@@ -42,7 +42,7 @@ function readFromFile(path) {
 exports.saveRandom =  async function (req, res) {
   try {
     await generateAndSaveRandomNumber();
-    const winners = await readFromFile('api/json/users.json');
+    const winners = await readFromFile('/json/users.json');
     res.send(JSON.stringify(winners));
   } catch (err) {
     res.send(err.message);
@@ -52,7 +52,7 @@ exports.saveRandom =  async function (req, res) {
 exports.guess =  async function (req, res) {
   try {
     const {user_id, guessedNumber} = req.body;
-    const randomValueObject = await readFromFile('api/json/vars.json');
+    const randomValueObject = await readFromFile('/json/vars.json');
     const randomValue = randomValueObject.randomNumber; 
     const gameInfo = {
         guess: guessedNumber == randomValue ? "Bingo!!!" : 
@@ -61,7 +61,7 @@ exports.guess =  async function (req, res) {
         user_id: user_id
     }
     if(gameInfo.win){
-      const data = await readFromFile('api/json/users.json');
+      const data = await readFromFile('/json/users.json');
       data.data.push({user_id});
       await addUserToWinnersList(data);
     }

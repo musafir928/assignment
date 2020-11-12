@@ -20,6 +20,16 @@
       class="celebrate"
       src="https://i.pinimg.com/originals/90/63/72/9063723db16c7b7a35b05ca712216844.gif"
     >
+    <img
+      v-if="isSpin"
+      class="celebrate"
+      src="https://miro.medium.com/max/1600/0*ptDX0HfJCYpo9Pcs.gif"
+    >
+    <img
+      v-if="isLoser"
+      class="celebrate"
+      src="https://thumbs.gfycat.com/MassiveOffbeatGlobefish-max-1mb.gif"
+    >
   </div>
 </template>
 
@@ -34,7 +44,8 @@ export default {
       user_id: this.$props.id,
       result: '',
       win: false,
-      winner: ''
+      winner: '',
+      isPending: false
     }
   },
   computed: {
@@ -54,10 +65,17 @@ export default {
     },
     isWinner () {
       return this.$props.hasWinner && this.winner === this.$props.id
+    },
+    isLoser () {
+      return this.$props.hasWinner && this.winner !== this.$props.id
+    },
+    isSpin(){
+      return this.isCurrent && this.isPending
     }
   },
   methods: {
     async sub () {
+      this.isPending = true;
       const data = JSON.stringify({
         user_id: this.user_id,
         guessedNumber: this.guessedNumber
@@ -66,6 +84,8 @@ export default {
         'Content-Type': 'application/json'
       }
       const res = await axios.post('api/guess', data, { headers })
+      setTimeout(()=>{ //this line for testing the spinner
+      this.isPending = false
       this.guessedNumber = ''
       this.result = res.data.guess
       this.win = res.data.win
@@ -75,8 +95,9 @@ export default {
         this.winner = this.user_id
         this.$root.$emit('changeWin', 'someone won')
       }
-    }
+    },700);
   }
+}
 }
 </script>
 
